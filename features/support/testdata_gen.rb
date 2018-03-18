@@ -2,11 +2,22 @@
 # path: location of  tthe feature file
 # name: name of the feature
 def create_feature(path, name)
-  puts "pending support/create_feature"
 
-  create_path("test_data/#{path}")
+  test_path = "test_data/#{path}"
+  create_path(test_path)
+
+  feature = <<DUMMY_FEATURE
+Feature: dummy feature for testing
+  This is a dummy just for testing purposes
+
+  Scenario: feature containing a scenario
+    Given something
+    When action
+    Then result
+DUMMY_FEATURE
 
   # feature file anlegen
+  IO.write("#{test_path}/#{name}", feature)
 end
 
 def create_path(path)
@@ -16,7 +27,7 @@ def create_path(path)
   path.split('/').each do |dirname|
     currentDir = "#{currentDir}/#{dirname}"
     # prüfen ob Verzeichnis existiert
-    if not Dir.exists?(dirname)
+    if not Dir.exists?(currentDir)
       # wenn nicht anlegen
       Dir.mkdir(currentDir)
     end
