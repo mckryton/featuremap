@@ -1,15 +1,24 @@
+require 'securerandom'
+
 class Mindmap
 
   def initialize
-
+    @nodes = { "root" => {"text" => "featuremap"}}
   end
 
   def create_featuremap(full_path)
-    map = "<map version=\"1.0.1\">\n"
+    IO.write("#{full_path}", to_s)
+  end
+
+  def to_s
+    map = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    map << "<map version=\"1.0.1\">\n"
     map << "<!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->\n"
-    map << "<node CREATED=\"1521894039416\" ID=\"ID_969661523\" MODIFIED=\"1521894053215\" TEXT=\"featuremap\"/>\n"
+    map << "<node CREATED=\"#{Time.now.to_i}\" ID=\"ID_#{SecureRandom.uuid.gsub(/-/,'')}\" MODIFIED=\"#{Time.now.to_i}\" TEXT=\"#{@nodes['root']['text']}\"/>\n"
+
+    #map << getTextFromNodes(nodes["root"]["nodes"])
+
     map << "</map>\n"
 
-    IO.write("#{full_path}", map)
   end
 end
