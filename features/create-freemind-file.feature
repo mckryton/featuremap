@@ -12,3 +12,5 @@ Ability: create freemind file
 #    Given the feature dir does not contain any folder or feature file
 #    When the mapper is called
 #    Then only a warning message is shown
+
+# new feature ? set out name automatically 
