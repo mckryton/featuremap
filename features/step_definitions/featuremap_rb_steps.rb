@@ -26,3 +26,23 @@ end
 Then("the mindmap contains a node with the feature name") do
   expect(@mapper.nodes["root"]["nodes"][0]["text"]).to match("dummy feature for testing")
 end
+
+Given("the feature dir contains at least one subdir") do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Given("the subdir contains a feature file") do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then("the mindmap contains a node with the subdir") do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then("the subdir node contains a node with the feature") do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Then("the subdir node is marked by a folder icon") do
+  pending # Write code here that turns the phrase above into concrete actions
+end
