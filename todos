@@ -4,3 +4,5 @@ refactor:
 
 scenarios
   * verschachtelte Verzeichnisse mit Unterknoten berücksichtigen
+  * recognice existing filenames
+  * use top level feature folders name for naming the mindmap file

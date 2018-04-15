@@ -40,9 +40,9 @@ Then("the mindmap contains a node with the subdir") do
 end
 
 Then("the subdir node contains a node with the feature") do
-  pending # Write code here that turns the phrase above into concrete actions
+  expect(@mapper.nodes["root"]["nodes"][0]["nodes"][0]["text"]).to match("dummy feature for testing")
 end
 
 Then("the subdir node is marked by a folder icon") do
-  pending # Write code here that turns the phrase above into concrete actions
+  expect(@mapper.nodes["root"]["nodes"][0]["type"]).to match("subdir")
 end
