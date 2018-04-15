@@ -31,27 +31,37 @@ class Mindmap
     nodes = []
     features = Dir.entries(p_features_path)
     features.each do |feature_file|
-      #recognice only .feature files
-      if feature_file =~ /\.feature$/
-        feature = File.read("#{p_features_path}/#{feature_file}")
-        feature.scan(/^\s*(Feature|Ability|Business Need):\s*(\S.*)$/) do |feature_type, feature_name|
-          nodes.insert(0,create_node(feature_name))
+      #ignore files starting with .
+      if feature_file =~ /^[^\.]/
+        #recognice only .feature files
+        if feature_file =~ /\.feature$/
+          feature = File.read("#{p_features_path}/#{feature_file}")
+          feature.scan(/^\s*(Feature|Ability|Business Need):\s*(\S.*)$/) do |feature_type, feature_name|
+            nodes.insert(0,create_node(feature_name, "feature"))
+          end
+        end
+        if File.directory?("#{p_features_path}/#{feature_file}")
+          nodes.insert(0,create_node(feature_file, "subdir"))
         end
       end
     end
     return nodes
   end
 
-
-  def create_node(p_node_text)
-    node = {"created" => Time.now.to_i, "id" => SecureRandom.uuid.gsub(/-/,''), "modified" => Time.now.to_i, "text" => p_node_text}
+  # create a new node
+  def create_node(p_node_text, p_node_type)
+    node = {"created" => Time.now.to_i, "id" => SecureRandom.uuid.gsub(/-/,''), "modified" => Time.now.to_i, "text" => p_node_text, "type" => p_node_type}
   end
 
-
   def nodes_to_s(p_nodes)
+    #TODO: verschachtelte nodes berücksichtigen
     nodes_text = ""
     p_nodes.each do |node|
-      nodes_text << "<node CREATED=\"#{node["created"]}\" ID=\"ID_#{node["id"]}\" MODIFIED=\"#{node["modified"]}\" TEXT=\"#{node["text"]}\"/>\n"
+      nodes_text << "<node CREATED=\"#{node["created"]}\" ID=\"ID_#{node["id"]}\" MODIFIED=\"#{node["modified"]}\" TEXT=\"#{node["text"]}\">\n"
+      if node["type"] == "subdir"
+        nodes_text << "<icon BUILTIN=\"folder\"/>"
+      end
+      nodes_text << "</node>"
     end
     return nodes_text
   end

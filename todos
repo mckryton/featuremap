@@ -1,0 +1,6 @@
+refactor:
+  * use xpath to validate mindmap nodes
+  * use {symbol: value} syntax for hashes
+
+scenarios
+  * verschachtelte Verzeichnisse mit Unterknoten berücksichtigen

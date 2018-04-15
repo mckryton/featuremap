@@ -1,7 +1,7 @@
 require 'mindmap'
 
 Before do
-  @path_to_results = "test_data/out/f1"
+  @path_to_results = "test_data/out"
 end
 
 Given("the feature dir contains a feature file") do
@@ -27,12 +27,12 @@ Then("the mindmap contains a node with the feature name") do
 end
 
 Given("the feature dir contains at least one subdir") do
-  @path_to_testdata = "test_data/in/f2/subdir"
-  create_path(@path_to_testdata)
+  @path_to_testdata = "test_data/in/f2"
+  create_path("#{@path_to_testdata}/subdir")
 end
 
 Given("the subdir contains a feature file") do
-  create_feature(@path_to_testdata, "subdir.feature")
+  create_feature("#{@path_to_testdata}/subdir", "subdir.feature")
 end
 
 Then("the mindmap contains a node with the subdir") do
