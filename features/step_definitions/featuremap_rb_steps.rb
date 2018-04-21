@@ -1,5 +1,3 @@
-require 'mindmap'
-
 Before do
   @path_to_results = "test_data/out"
 end
@@ -20,10 +18,12 @@ Then("a mindmap file is created") do
   #validate generated mm file with freemind.xsd
   #validate_mm returns array containing validation errors
   expect(validate_mm(@featuremap_file).count).to eq(0)
+  @mindmap = Nokogiri::XML(File.read(@featuremap_file))
 end
 
 Then("the mindmap contains a node with the feature name") do
   expect(@mapper.nodes["root"]["nodes"][0]["text"]).to match("dummy feature for testing")
+  expect(@mindmap.xpath("//map/node/node/@TEXT").first.to_s).to match("dummy feature for testing")
 end
 
 Given("the feature dir contains at least one subdir") do
@@ -37,12 +37,14 @@ end
 
 Then("the mindmap contains a node with the subdir") do
   expect(@mapper.nodes["root"]["nodes"][0]["text"]).to match("subdir")
+  expect(@mindmap.xpath("//map/node/node/@TEXT").first.to_s).to match("subdir")
 end
 
 Then("the subdir node contains a node with the feature") do
   expect(@mapper.nodes["root"]["nodes"][0]["nodes"][0]["text"]).to match("dummy feature for testing")
+  expect(@mindmap.xpath("//map/node/node[@TEXT='subdir']/node/@TEXT").first.to_s).to match("dummy feature for testing")
 end
 
 Then("the subdir node is marked by a folder icon") do
-  expect(@mapper.nodes["root"]["nodes"][0]["type"]).to match("subdir")
+  expect(@mindmap.xpath("//map/node/node/icon").count).to eq(1)
 end
