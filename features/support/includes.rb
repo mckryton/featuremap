@@ -1,3 +1,5 @@
+require 'logger'
+
 # include the featuremap main class
 require 'mindmap'
 
