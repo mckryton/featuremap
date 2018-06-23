@@ -1,8 +1,8 @@
-Ability: create freemind file
+Ability: create mindmap from feature dir
   Calling the mapper will result in a new freemind mindmap file by default. This
   file will serve as a container for all features and scenarios.
 
-  # rule: how to handle subdirs
+  # rule: turn subdirs into mindmap nodes
   # - present subdirs as mindmap nodes
   # - add folder icon to subdir nodes
 

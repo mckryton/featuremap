@@ -65,6 +65,13 @@ end
 
 Then("the mindmap shows nodes for every subdir") do
   pending # Write code here that turns the phrase above into concrete actions
+  @subdir_setup.each do |table_row|
+    subdir_path = @subdir_setup["subdirs"]
+    subdir_path.split("/").each do |subdir|
+      #TODO: set xpath to match subdir node
+      expect(@mindmap.xpath("/node/@TEXT[contains(text(),'#{subdir}')]").first.to_s).to match("subdir")
+    end
+  end
 end
 
 Then("the node of every subdir contains the corresponding number of feature nodes") do
