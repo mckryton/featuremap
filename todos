@@ -2,6 +2,15 @@ refactor:
   * use {symbol: value} syntax for hashes
 
 scenarios
-  * verschachtelte Verzeichnisse mit Unterknoten berücksichtigen
-  * recognice existing filenames
   * use top level feature folders name for naming the mindmap file
+
+features
+  * wrapper for commandline
+    - recognize existing filenames for mindmaps
+  * create featuremap gem
+  * add scenario steps as nodes
+      - show outlines
+      - show data tables
+  * syntax highlighting for steps
+  * add images from tags
+  

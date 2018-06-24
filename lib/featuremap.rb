@@ -1,7 +1,7 @@
 # use securerandom to create unique id's
 require 'securerandom'
 
-class Mindmap
+class Featuremap
 
   attr_reader :nodes
 
@@ -61,9 +61,16 @@ class Mindmap
     nodes_text = p_nodes_text
     p_nodes.each do |node|
       nodes_text << "<node CREATED=\"#{node["created"]}\" ID=\"ID_#{node["id"]}\" MODIFIED=\"#{node["modified"]}\" TEXT=\"#{node["text"]}\">\n"
-      if node["type"] == "subdir"
+      # add icons to nodes
+      case node["type"]
+      when "subdir"
         nodes_text << "<icon BUILTIN=\"folder\"/>"
+      when "feature"
+        nodes_text << "<icon BUILTIN=\"idea\"/>"
+      when "scenario"
+        nodes_text << "<icon BUILTIN=\"attach\"/>"
       end
+      # call function recursively for sublevel nodes
       if not node["nodes"].empty?
         nodes_to_s(node["nodes"], nodes_text)
       end

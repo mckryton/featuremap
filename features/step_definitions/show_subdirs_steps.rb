@@ -1,12 +1,3 @@
-Before do
-  @path_to_results = "test_data/out"
-  @path_to_testdata = "test_data/in"
-end
-
-Given("a feature dir {string}") do |string|
-  @path_to_testdata = "#{@path_to_testdata}/#{string}"
-end
-
 Given("it contains at least one subdir") do
   create_path("#{@path_to_testdata}/subdir")
 end
@@ -30,13 +21,6 @@ Given("the feature dir contains subdirs with a different amount of features") do
   end
 end
 
-When("the mapper is called") do
-  @mapper = Mindmap.new(@path_to_testdata)
-  create_path(@path_to_results)
-  @featuremap_file = "#{@path_to_results}/featuremap.mm"
-  @mapper.create_featuremap(@featuremap_file)
-end
-
 Then("a mindmap file without any validation error is created") do
   #validate generated mm file with freemind.xsd
   #validate_mm returns array containing validation errors
@@ -46,34 +30,37 @@ end
 
 Then("the mindmap contains a node with the feature name") do
   expect(@mapper.nodes["root"]["nodes"][0]["text"]).to match("dummy feature for testing")
-  expect(@mindmap.xpath("//map/node/node/@TEXT").first.to_s).to match("dummy feature for testing")
+  expect(@mindmap.xpath("/map/node/node/@TEXT").first.to_s).to match("dummy feature for testing")
 end
 
 Then("the mindmap contains a node with the subdir") do
   expect(@mapper.nodes["root"]["nodes"][0]["text"]).to match("subdir")
-  expect(@mindmap.xpath("//map/node/node/@TEXT").first.to_s).to match("subdir")
+  expect(@mindmap.xpath("/map/node/node/@TEXT").first.to_s).to match("subdir")
 end
 
 Then("the subdir node contains a node with the feature") do
   expect(@mapper.nodes["root"]["nodes"][0]["nodes"][0]["text"]).to match("dummy feature for testing")
-  expect(@mindmap.xpath("//map/node/node[@TEXT='subdir']/node/@TEXT").first.to_s).to match("dummy feature for testing")
+  expect(@mindmap.xpath("/map/node/node[@TEXT='subdir']/node/@TEXT").first.to_s).to match("dummy feature for testing")
 end
 
 Then("the subdir node is marked by a folder icon") do
-  expect(@mindmap.xpath("//map/node/node/icon").count).to eq(1)
+  expect(@mindmap.xpath("/map/node/node/icon").count).to eq(1)
 end
 
-Then("the mindmap shows nodes for every subdir") do
-  pending # Write code here that turns the phrase above into concrete actions
+Then("the mindmap shows nodes with a folder icon for every subdir") do
   @subdir_setup.each do |table_row|
-    subdir_path = @subdir_setup["subdirs"]
+    subdir_path = table_row["subdirs"]
     subdir_path.split("/").each do |subdir|
-      #TODO: set xpath to match subdir node
-      expect(@mindmap.xpath("/node/@TEXT[contains(text(),'#{subdir}')]").first.to_s).to match("subdir")
+      expect(@mindmap.xpath("//node[@TEXT = '#{subdir}']").count).to eq(1)
+      expect(@mindmap.xpath("//node[@TEXT = '#{subdir}']/icon").first.to_s).to match("<icon BUILTIN=\"folder\"/>")
     end
   end
 end
 
 Then("the node of every subdir contains the corresponding number of feature nodes") do
-  pending # Write code here that turns the phrase above into concrete actions
+  @subdir_setup.each do |table_row|
+    subdir_path = table_row["subdirs"]
+    subdir = subdir_path.split("/").pop
+    expect(@mindmap.xpath("//node[@TEXT = '#{subdir}']/node/icon[@BUILTIN = 'idea']/..").count).to eq(table_row["nr_of_features"].to_i)
+  end
 end

@@ -3,8 +3,6 @@
 # name: name of the feature
 def create_feature(path, name)
 
-  create_path(path)
-
   feature = <<DUMMY_FEATURE
 Feature: dummy feature for testing
   This is a dummy just for testing purposes
@@ -15,8 +13,23 @@ Feature: dummy feature for testing
     Then result
 DUMMY_FEATURE
 
-  # feature file anlegen
-  IO.write("#{path}/#{name}", feature)
+  create_file(path, name, feature)
+end
+
+def create_other_file(path, name)
+
+  content = <<DUMMY_TEXT
+1,dummy,22
+2,dummy,23
+DUMMY_TEXT
+
+  create_file(path, name, content)
+end
+
+def create_file(path, name, content)
+  create_path(path)
+  # file anlegen
+  IO.write("#{path}/#{name}", content)
 end
 
 def create_path(path)
