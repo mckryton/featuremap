@@ -1,7 +1,14 @@
 Before do
   @log = Logger.new(STDOUT)
   @log.datetime_format = "%H:%M:%S"
-  @log.level = Logger::WARN
+  if ENV['LOG_LEVEL'] == 'debug'
+    @log.level = Logger::DEBUG
+  elsif ENV['LOG_LEVEL'] == 'info'
+    @log.level = Logger::INFO
+  else
+    # default log level
+    @log.level = Logger::WARN
+  end
   @path_to_results = "test_data/out"
   @path_to_testdata = "test_data/in"
 end

@@ -11,7 +11,14 @@ class Featuremap
   def initialize(p_features_path)
     @log = Logger.new(STDOUT)
     @log.datetime_format = "%H:%M:%S"
-    @log.level = Logger::DEBUG
+    if ENV['LOG_LEVEL'] == 'debug'
+      @log.level = Logger::DEBUG
+    elsif ENV['LOG_LEVEL'] == 'info'
+      @log.level = Logger::INFO
+    else
+      # default log level
+      @log.level = Logger::WARN
+    end
     @features_path = p_features_path
     @mindmap = Mindmap.new(@log)
   end
