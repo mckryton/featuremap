@@ -1,7 +1,7 @@
 Before do
   @log = Logger.new(STDOUT)
   @log.datetime_format = "%H:%M:%S"
-  @log.level = Logger::INFO
+  @log.level = Logger::WARN
   @path_to_results = "test_data/out"
   @path_to_testdata = "test_data/in"
 end

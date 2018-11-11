@@ -1,0 +1,4 @@
+default: LOG_LEVEL=warn
+
+debug: LOG_LEVEL=debug -t @debug
+info: LOG_LEVEL=info

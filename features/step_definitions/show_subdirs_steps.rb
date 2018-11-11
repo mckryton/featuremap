@@ -29,17 +29,14 @@ Then("a mindmap file without any validation error is created") do
 end
 
 Then("the mindmap contains a node with the feature name") do
-  expect(@mapper.nodes["root"]["nodes"][0]["text"]).to match("dummy feature for testing")
   expect(@mindmap.xpath("/map/node/node/@TEXT").first.to_s).to match("dummy feature for testing")
 end
 
 Then("the mindmap contains a node with the subdir") do
-  expect(@mapper.nodes["root"]["nodes"][0]["text"]).to match("subdir")
   expect(@mindmap.xpath("/map/node/node/@TEXT").first.to_s).to match("subdir")
 end
 
 Then("the subdir node contains a node with the feature") do
-  expect(@mapper.nodes["root"]["nodes"][0]["nodes"][0]["text"]).to match("dummy feature for testing")
   expect(@mindmap.xpath("/map/node/node[@TEXT='subdir']/node/@TEXT").first.to_s).to match("dummy feature for testing")
 end
 
