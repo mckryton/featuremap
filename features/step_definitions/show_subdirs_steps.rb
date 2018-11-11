@@ -58,6 +58,7 @@ Then("the node of every subdir contains the corresponding number of feature node
   @subdir_setup.each do |table_row|
     subdir_path = table_row["subdirs"]
     subdir = subdir_path.split("/").pop
-    expect(@mindmap.xpath("//node[@TEXT = '#{subdir}']/node/icon[@BUILTIN = 'idea']/..").count).to eq(table_row["nr_of_features"].to_i)
+    @log.debug "xpath: //node[@TEXT = '#{subdir}']/node[starts-with(@ID, 'feature_')]"
+    expect(@mindmap.xpath("//node[@TEXT = '#{subdir}']/node[starts-with(@ID, 'feature_')]").count).to eq(table_row["nr_of_features"].to_i)
   end
 end

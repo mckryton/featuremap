@@ -44,5 +44,5 @@ Then("the mindmap contains {int} nodes") do |int|
 end
 
 Then("the mindmap contains only {int} feature nodes") do |int|
-  expect(@mindmap.xpath("//node/icon[@BUILTIN = 'idea']/..").count).to eq(int)
+  expect(@mindmap.xpath("//node[starts-with(@ID, 'feature_')]").count).to eq(int)
 end

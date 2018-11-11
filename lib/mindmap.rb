@@ -35,9 +35,9 @@ class Mindmap
   # turn hash of nodes into mindmap xml string
   def nodes_to_s(p_nodes, p_nodes_text="")
     nodes_text = p_nodes_text
-    @log.debug nodes_text
+    #@log.debug nodes_text
     p_nodes.each do |node|
-      nodes_text << "<node CREATED=\"#{node["created"]}\" ID=\"ID_#{node["id"]}\" MODIFIED=\"#{node["modified"]}\" TEXT=\"#{node["text"]}\">\n"
+      nodes_text << "<node CREATED=\"#{node["created"]}\" ID=\"#{node["type"]}_#{node["id"]}\" MODIFIED=\"#{node["modified"]}\" TEXT=\"#{node["text"]}\">\n"
       # add icons to nodes
       case node["type"]
       when "subdir"
