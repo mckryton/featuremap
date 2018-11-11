@@ -42,8 +42,6 @@ class Mindmap
       case node["type"]
       when "subdir"
         nodes_text << "<icon BUILTIN=\"folder\"/>\n"
-      when "feature"
-        nodes_text << "<icon BUILTIN=\"idea\"/>\n"
       when "scenario"
         nodes_text << "<icon BUILTIN=\"attach\"/>\n"
       end

@@ -37,9 +37,9 @@ Then("the mindmap contains a root node named {string}") do |string|
 
 end
 
-Then("the mindmap contains {int} nodes marked by an lightbulb icon") do |int|
+Then("the mindmap contains {int} nodes") do |int|
   for file_nr in 1..int
-    expect(@mindmap.xpath("/map/node/node/icon[@BUILTIN = 'idea']/..").count).to eq(int)
+    expect(@mindmap.xpath("/map/node/node").count).to eq(int)
   end
 end
 
