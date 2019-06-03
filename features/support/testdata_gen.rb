@@ -1,17 +1,24 @@
 # generate feature files as test data
 # path: location of  tthe feature file
 # name: name of the feature
-def create_feature(path, name)
+def create_feature(path, name, scenarios = [])
 
   feature = <<DUMMY_FEATURE
 Feature: dummy feature for testing
   This is a dummy just for testing purposes
-
-  Scenario: feature containing a scenario
-    Given something
-    When action
-    Then result
 DUMMY_FEATURE
+
+
+  scenarios.each do |scenario_name, scenario_type|
+    feature += <<DUMMY_SCENARIO
+
+#{scenario_type}: #{scenario_name}
+  Given something
+  When action
+  Then result
+
+DUMMY_SCENARIO
+  end
 
   create_file(path, name, feature)
 end

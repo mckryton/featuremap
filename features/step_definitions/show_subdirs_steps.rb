@@ -21,13 +21,6 @@ Given("the feature dir contains subdirs with a different amount of features") do
   end
 end
 
-Then("a mindmap file without any validation error is created") do
-  #validate generated mm file with freemind.xsd
-  #validate_mm returns array containing validation errors
-  expect(validate_mm(@featuremap_file).count).to eq(0)
-  @mindmap = Nokogiri::XML(File.read(@featuremap_file))
-end
-
 Then("the mindmap contains a node with the feature name") do
   expect(@mindmap.xpath("/map/node/node/@TEXT").first.to_s).to match("dummy feature for testing")
 end

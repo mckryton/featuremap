@@ -42,8 +42,8 @@ class Mindmap
       case node["type"]
       when "subdir"
         nodes_text << "<icon BUILTIN=\"folder\"/>\n"
-      when "scenario"
-        nodes_text << "<icon BUILTIN=\"attach\"/>\n"
+      when "scenario_outline"
+        nodes_text << "<icon BUILTIN=\"list\"/>\n"
       end
       # call function recursively for sublevel nodes
       if not node["nodes"].empty?

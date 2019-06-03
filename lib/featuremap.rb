@@ -31,6 +31,7 @@ class Featuremap
 
   # scan feature folder for feature files and subdirs
   def read_features(p_features_path, p_parent_node = nil)
+    feature_node = nil
     features = Dir.entries(p_features_path)
     features.each do |feature_file|
       #ignore files starting with .
@@ -39,7 +40,13 @@ class Featuremap
         if feature_file =~ /\.feature$/
           feature = File.read("#{p_features_path}/#{feature_file}")
           feature.scan(/^\s*(Feature|Ability|Business Need):\s*(\S.*)$/) do |feature_type, feature_name|
-            @mindmap.add_node(feature_name, "feature", p_parent_node)
+            feature_node = @mindmap.add_node(feature_name, "feature", p_parent_node)
+          end
+          feature.scan(/^\s*(Scenario|Scenario Outline):\s*(\S.*)$/) do |scenario_type, scenario_name|
+            case scenario_type
+            when "Scenario Outline" then @mindmap.add_node(scenario_name, "scenario_outline", feature_node)
+              when "Scenario"  then @mindmap.add_node(scenario_name, "scenario", feature_node)
+            end
           end
         end
         # look for subdirs
