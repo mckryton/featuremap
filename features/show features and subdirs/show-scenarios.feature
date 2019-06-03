@@ -4,7 +4,7 @@ Ability: show scenarios
   sub-nodes for all scenarios.
 
   # rule: if a feature has scenario, scenario name will be shown as subnodes to
-  @debug
+
   Scenario Outline: show plain scenarios
     Given a feature dir with a feature containing <nr_of_scenarios> scenarios
      When the mapper is called
@@ -20,7 +20,7 @@ Ability: show scenarios
 
 
   # rule: outline scenarios are marked by an list icon
-  @debug
+  
   Scenario: show outline scenario
     Given a feature dir with a feature containing an outline scenario
      When the mapper is called

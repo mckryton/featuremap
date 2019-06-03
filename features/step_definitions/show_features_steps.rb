@@ -11,6 +11,11 @@ Given("a feature dir is multiple") do
   @path_to_testdata = "#{@path_to_testdata}/feature_dir_multiple"
 end
 
+Given("a feature dir containing a feature file") do
+  @path_to_testdata = "#{@path_to_testdata}/feature_dir_simple"
+  create_feature(@path_to_testdata, "dummy feature.feature")
+end
+
 Given("it contains {int}") do |int|
   for file_nr in 1..int
     create_feature(@path_to_testdata, "dummy feature #{file_nr}.feature")
@@ -45,4 +50,8 @@ end
 
 Then("the mindmap contains only {int} feature nodes") do |int|
   expect(@mindmap.xpath("//node[starts-with(@ID, 'feature_')]").count).to eq(int)
+end
+
+Then("the feature node in this mindmap is using a bold font") do
+  expect(@mindmap.xpath("//node[starts-with(@ID, 'feature_')]/font[@BOLD = 'true']").count).to eq(1)
 end

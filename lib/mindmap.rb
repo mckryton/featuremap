@@ -38,8 +38,10 @@ class Mindmap
     #@log.debug nodes_text
     p_nodes.each do |node|
       nodes_text << "<node CREATED=\"#{node["created"]}\" ID=\"#{node["type"]}_#{node["id"]}\" MODIFIED=\"#{node["modified"]}\" TEXT=\"#{node["text"]}\">\n"
-      # add icons to nodes
+      # add icons and fonts to nodes
       case node["type"]
+      when "feature"
+        nodes_text << "<font BOLD=\"true\" NAME=\"SansSerif\" SIZE=\"12\"/>"
       when "subdir"
         nodes_text << "<icon BUILTIN=\"folder\"/>\n"
       when "scenario_outline"

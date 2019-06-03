@@ -2,10 +2,7 @@ Ability: show features
   Calling the mapper will result in a new freemind mindmap. The mindmap will
   show all feature files as separate nodes.
 
-  # rule: turn features into mindmap nodes
-  # - show features as mindmap nodes
-  # - add a lightbulb icon to mark them as features
-
+  # rule: every feature file is shown as a node in the mindmap^
 
   Scenario Outline: show features
     Given a feature dir is <feature_dir_type>
@@ -22,6 +19,8 @@ Ability: show features
       |3             |multiple        |
 
 
+  # rule: other files than .feature files are ignored
+
   Scenario: ignore other file types
     Given a feature dir "mixed_files"
       And it contains <nr_of_files> files of <file_type>
@@ -32,3 +31,12 @@ Ability: show features
      When the mapper is called
      Then a mindmap file without any validation error is created
       And the mindmap contains only 3 feature nodes
+
+
+  # rule: feature names are using a bold font
+  @debug
+  Scenario: format feature names in bold
+    Given a feature dir containing a feature file
+     When the mapper is called
+     Then a mindmap file without any validation error is created
+      And the feature node in this mindmap is using a bold font
