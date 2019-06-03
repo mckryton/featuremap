@@ -4,11 +4,11 @@ Ability: show features
 
   # rule: turn features into mindmap nodes
   # - show features as mindmap nodes
-  # - add a lightbulb icon to mark them as nr_of_features
+  # - add a lightbulb icon to mark them as features
 
-  @debug
+
   Scenario Outline: show features
-    Given a feature dir <feature_dir>
+    Given a feature dir is <feature_dir_type>
       And it contains <nr_of_features>
      When the mapper is called
      Then a mindmap file without any validation error is created
@@ -16,19 +16,19 @@ Ability: show features
       And the mindmap contains <nr_of_features> nodes
 
       Examples:
-      |nr_of_features|feature_dir|
-      |0|feature_dir_empty|
-      |1|feature_dir_single|
-      |3|feature_dir_multiple|
+      |nr_of_features|feature_dir_type|
+      |0             |empty           |
+      |1             |single          |
+      |3             |multiple        |
 
 
   Scenario: ignore other file types
     Given a feature dir "mixed_files"
       And it contains <nr_of_files> files of <file_type>
             |nr_of_files|file_type|
-            |3|feature|
-            |1|txt|
-            |1|csv|
+            |3          |feature  |
+            |1          |txt      |
+            |1          |csv      |
      When the mapper is called
      Then a mindmap file without any validation error is created
       And the mindmap contains only 3 feature nodes

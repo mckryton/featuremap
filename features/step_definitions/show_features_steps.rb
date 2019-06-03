@@ -1,13 +1,13 @@
-Given("a feature dir feature_dir_empty") do
+Given("a feature dir is empty") do
   @path_to_testdata = "#{@path_to_testdata}/feature_dir_empty"
   create_path(@path_to_testdata)
 end
 
-Given("a feature dir feature_dir_single") do
+Given("a feature dir is single") do
   @path_to_testdata = "#{@path_to_testdata}/feature_dir_single"
 end
 
-Given("a feature dir feature_dir_multiple") do
+Given("a feature dir is multiple") do
   @path_to_testdata = "#{@path_to_testdata}/feature_dir_multiple"
 end
 

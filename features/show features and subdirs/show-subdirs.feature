@@ -26,15 +26,15 @@ Ability: show subdirs
       And the subdir node contains a node with the feature
       And the subdir node is marked by a folder icon
 
-
+  
   Scenario: feature dir with multiple levels of subdirs
     Given a feature dir "subdirs_multiple_levels"
       And the feature dir contains subdirs with a different amount of features
-          |subdirs|nr_of_features|
-          |sub1/sub1_1|1|
-          |sub2|2|
-          |sub3/sub3_1/sub3_2|2|
-          |sub1/sub1_2|0|
+          |subdirs            |nr_of_features|
+          |sub1/sub1_1        |1             |
+          |sub2               |2             |
+          |sub3/sub3_1/sub3_2 |2             |
+          |sub1/sub1_2        |0             |
      When the mapper is called
      Then a mindmap file without any validation error is created
       And the mindmap shows nodes with a folder icon for every subdir
