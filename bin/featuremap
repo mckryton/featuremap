@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'optparse'
+require_relative '../lib/featuremap'
 
 options = {}
 option_parser = OptionParser.new do |opts|
@@ -13,7 +14,14 @@ option_parser = OptionParser.new do |opts|
     options[:output_file] = output_file
   end
 
+  opts.on("-v","--verbose") do
+    options[:verbose] = true
+  end
+
 end
 
 option_parser.parse!
 puts options.inspect
+
+featuremap = Featuremap.new(options[:feature_folder],options[:output_file])
+featuremap.create_featuremap(options[:output_file])

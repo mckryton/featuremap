@@ -1,5 +1,5 @@
 refactor:
-  * use {symbol: value} syntax for hashes
+
 
 scenarios
   * use top level feature folders name for naming the mindmap file
@@ -7,10 +7,14 @@ scenarios
 features
   * wrapper for commandline
     - recognize existing filenames for mindmaps
-  * create featuremap gem
-  * add scenario steps as nodes
-      - show outlines
+    - warn if name for feature folder != "features"
+    - show help for commandline
+  * show scenarios
       - show data tables
-  * syntax highlighting for steps
+  * show folders
+      - ignore steps folder
+      - ignore support folder
   * add images from tags
-  
+
+usage
+  * create featuremap gem

@@ -8,7 +8,7 @@ class Featuremap
 
   attr_reader :nodes
 
-  def initialize(p_features_path)
+  def initialize(p_features_path, p_verbose = false)
     @log = Logger.new(STDOUT)
     @log.datetime_format = "%H:%M:%S"
     if ENV['LOG_LEVEL'] == 'debug'
@@ -19,14 +19,26 @@ class Featuremap
       # default log level
       @log.level = Logger::WARN
     end
-    @features_path = p_features_path
+    if p_verbose
+      @log.level = Logger::INFO
+    end
+    if p_features_path
+      @features_path = p_features_path
+    else
+      @features_path = Dir.pwd
+    end
     @mindmap = Mindmap.new(@log)
   end
 
   # class entry point - create a minmap for a given path
   def create_featuremap(p_featuremap_path)
+    if p_featuremap_path
+      featuremap_path = p_featuremap_path
+    else
+      featuremap_path = Dir.pwd + "/featuremap.mm"
+    end
     read_features(@features_path)
-    IO.write("#{p_featuremap_path}", @mindmap.to_s)
+    IO.write("#{featuremap_path}", @mindmap.to_s)
   end
 
   # scan feature folder for feature files and subdirs
