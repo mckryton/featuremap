@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+options = {}
+option_parser = OptionParser.new do |opts|
+
+  opts.on("-f FEATURE_FOLDER","--feature_folder FEATURE_FOLDER") do |feature_folder|
+    options[:feature_folder] = feature_folder
+  end
+
+  opts.on("-o MINDMAP","--output_file MINDMAP") do |output_file|
+    options[:output_file] = output_file
+  end
+
+end
+
+option_parser.parse!
+puts options.inspect
