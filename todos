@@ -1,20 +1,21 @@
 refactor:
-
-
-scenarios
-  * use top level feature folders name for naming the mindmap file
+* use the term "folder" instead of "subdir", e.g. for node types
 
 features
   * wrapper for commandline
     - recognize existing filenames for mindmaps
     - warn if name for feature folder != "features"
     - show help for commandline
+    - use top level feature folders name for naming the mindmap file
   * show scenarios
       - show data tables
   * show folders
       - ignore steps folder
       - ignore support folder
-  * add images from tags
+  * use tags
+    - add images from tags
+    - map tags to icons
 
 usage
   * create featuremap gem
+  * write an readme

@@ -63,8 +63,11 @@ class Featuremap
         end
         # look for subdirs
         if File.directory?("#{p_features_path}/#{feature_file}")
-          subdir_node = @mindmap.add_node(feature_file, "subdir", p_parent_node)
-          read_features("#{p_features_path}/#{feature_file}", subdir_node)
+          # ignore step_definitions and support folders because those are used for code
+          if feature_file != "step_definitions" && feature_file != "support"
+            subdir_node = @mindmap.add_node(feature_file, "subdir", p_parent_node)
+            read_features("#{p_features_path}/#{feature_file}", subdir_node)
+          end
         end
       end
     end

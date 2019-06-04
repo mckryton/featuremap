@@ -26,7 +26,7 @@ Ability: show subdirs
       And the subdir node contains a node with the feature
       And the subdir node is marked by a folder icon
 
-  
+
   Scenario: feature dir with multiple levels of subdirs
     Given a feature dir "subdirs_multiple_levels"
       And the feature dir contains subdirs with a different amount of features
@@ -39,3 +39,19 @@ Ability: show subdirs
      Then a mindmap file without any validation error is created
       And the mindmap shows nodes with a folder icon for every subdir
       And the node of every subdir contains the corresponding number of feature nodes
+
+
+  # rule: don't show subdirs used for code and configuration
+  @debug
+  Scenario: ignore step_definitions and support folders
+    Given a feature dir "subdirs_code_config"
+      And the feature dir contains subdirs with a different amount of features
+          |subdirs            |nr_of_features|
+          |sub1/sub1_1        |1             |
+          |sub2               |2             |
+          |step_definitions   |0             |
+          |support            |0             |
+     When the mapper is called
+     Then a mindmap file without any validation error is created
+      And the minmap does not contain a folder node "step_definitions"
+      And the minmap does not contain a folder node "support"
