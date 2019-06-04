@@ -1,5 +1,6 @@
 refactor:
 * use the term "folder" instead of "subdir", e.g. for node types
+* add a commandline feature
 
 features
   * wrapper for commandline
@@ -9,9 +10,6 @@ features
     - use top level feature folders name for naming the mindmap file
   * show scenarios
       - show data tables
-  * show folders
-      - ignore steps folder
-      - ignore support folder
   * use tags
     - add images from tags
     - map tags to icons
