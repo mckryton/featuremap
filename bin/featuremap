@@ -6,11 +6,13 @@ require_relative '../lib/featuremap'
 options = {}
 option_parser = OptionParser.new do |opts|
 
-  opts.on("-f FEATURE_FOLDER","--feature_folder FEATURE_FOLDER") do |feature_folder|
+  opts.on("-f FEATURE_FOLDER","--feature_folder FEATURE_FOLDER", \
+    "path of the features folder") do |feature_folder|
     options[:feature_folder] = feature_folder
   end
 
-  opts.on("-o MINDMAP","--output_file MINDMAP") do |output_file|
+  opts.on("-o MINDMAP","--output_file MINDMAP", \
+    "name of the mindmap file") do |output_file|
     options[:output_file] = output_file
   end
 
@@ -23,5 +25,5 @@ end
 option_parser.parse!
 puts options.inspect
 
-featuremap = Featuremap.new(options[:feature_folder],options[:output_file])
-featuremap.create_featuremap(options[:output_file])
+#featuremap = Featuremap.new(options[:feature_folder],options[:output_file])
+#featuremap.create_featuremap(options[:output_file])

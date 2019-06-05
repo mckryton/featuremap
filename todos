@@ -1,6 +1,6 @@
 refactor:
-* use the term "folder" instead of "subdir", e.g. for node types
-* add a commandline feature
+  * use the term "folder" instead of "subdir", e.g. for node types
+  * add a commandline feature
 
 features
   * wrapper for commandline
@@ -8,11 +8,16 @@ features
     - warn if name for feature folder != "features"
     - show help for commandline
     - use top level feature folders name for naming the mindmap file
+  * show features
+    - show tags
   * show scenarios
-      - show data tables
+    - show data tables
+    - show scenario steps in comments
+    - add syntax highlighting for scenario keywords Given, When, Then
   * use tags
     - add images from tags
     - map tags to icons
+    - use tags instead of subdirs as first level nodes
 
 usage
   * create featuremap gem
