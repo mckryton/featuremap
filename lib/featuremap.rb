@@ -27,6 +27,7 @@ class Featuremap
     else
       @features_path = Dir.pwd
     end
+    @log.info("create a new featuremap")
     @mindmap = Mindmap.new(@log)
   end
 

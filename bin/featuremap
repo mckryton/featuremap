@@ -6,15 +6,9 @@ require_relative '../lib/featuremap'
 options = {}
 option_parser = OptionParser.new do |opts|
 
-  opts.on("-f FEATURE_FOLDER","--feature_folder FEATURE_FOLDER", \
-    "path of the features folder") do |feature_folder|
-    options[:feature_folder] = feature_folder
-  end
-
-  opts.on("-o MINDMAP","--output_file MINDMAP", \
-    "name of the mindmap file") do |output_file|
-    options[:output_file] = output_file
-  end
+  executable_name = File.basename($PROGRAM_NAME)
+  opts.banner = "Create a mindmap from Gherkin feature files\n\n" + \
+  "Usage: #{executable_name} [options] features_dir [mindmap_file]\n"
 
   opts.on("-v","--verbose") do
     options[:verbose] = true
@@ -23,7 +17,16 @@ option_parser = OptionParser.new do |opts|
 end
 
 option_parser.parse!
-puts options.inspect
-
-#featuremap = Featuremap.new(options[:feature_folder],options[:output_file])
-#featuremap.create_featuremap(options[:output_file])
+if ARGV.empty?
+  puts "you must supply the location of the feature files\n\n"
+  puts option_parser.help
+else
+  feature_dir = ARGV[0]
+  if ARGV[1]
+    output_file = ARGV[1]
+  else
+    output_file = "STDOUT"
+  end
+  featuremap = Featuremap.new(feature_dir,options[:verbose])
+  featuremap.create_featuremap(output_file)
+end
