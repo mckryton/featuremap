@@ -6,7 +6,6 @@ features
   * wrapper for commandline
     - recognize existing filenames for mindmaps
     - warn if name for feature folder != "features"
-    - show help for commandline
     - use top level feature folders name for naming the mindmap file
   * show features
     - show tags
