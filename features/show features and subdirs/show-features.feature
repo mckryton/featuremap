@@ -20,7 +20,7 @@ Ability: show features
 
 
   # rule: other files than .feature files are ignored
-
+  
   Scenario: ignore other file types
     Given a feature dir "mixed_files"
       And it contains <nr_of_files> files of <file_type>
@@ -34,7 +34,7 @@ Ability: show features
 
 
   # rule: feature names are using a bold font
-  @debug
+
   Scenario: format feature names in bold
     Given a feature dir containing a feature file
      When the mapper is called

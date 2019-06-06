@@ -7,21 +7,27 @@ Before do
     @log.level = Logger::INFO
   else
     # default log level
-    @log.level = Logger::INFO
+    @log.level = Logger::ERROR
   end
+  @featuremap_file = ""
   @path_to_results = "test_data/out"
   @path_to_testdata = "test_data/in"
 end
 
-Given("a feature dir {string}") do |string|
-  @path_to_testdata = "#{@path_to_testdata}/#{string}"
+Given("a feature dir {string}") do |feature_dir|
+  @feature_dir = feature_dir
+  create_path("#{@path_to_testdata}/#{@feature_dir}")
 end
 
 When("the mapper is called") do
-  @mapper = Featuremap.new(@path_to_testdata)
+  @mapper = Featuremap.new("#{@path_to_testdata}/#{@feature_dir}")
   create_path(@path_to_results)
   @featuremap_file = "#{@path_to_results}/featuremap.mm"
   @mapper.create_featuremap(@featuremap_file)
+end
+
+When("the user runs featuremap") do
+  @script_output = `bin/featuremap #{@path_to_testdata}/#{@feature_dir} #{@featuremap_file}`
 end
 
 Then("a mindmap file without any validation error is created") do

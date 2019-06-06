@@ -1,19 +1,19 @@
 Given("it contains at least one subdir") do
-  create_path("#{@path_to_testdata}/subdir")
+  create_path("#{@path_to_testdata}/#{@feature_dir}/subdir")
 end
 
 Given("it contains a feature file") do
-  create_feature(@path_to_testdata, "dummy.feature")
+  create_feature("#{@path_to_testdata}/#{@feature_dir}", "dummy.feature")
 end
 
 Given("the subdir contains a feature file") do
-  create_feature("#{@path_to_testdata}/subdir", "subdir.feature")
+  create_feature("#{@path_to_testdata}/#{@feature_dir}/subdir", "subdir.feature")
 end
 
 Given("the feature dir contains subdirs with a different amount of features") do |table|
   @subdir_setup = table.hashes
   table.hashes.each do |table_row|
-    subdir_path = "#{@path_to_testdata}/#{table_row["subdirs"]}"
+    subdir_path = "#{@path_to_testdata}/#{@feature_dir}/#{table_row["subdirs"]}"
     create_path(subdir_path)
     for feature_count in 1..table_row["nr_of_features"].to_i
       create_feature(subdir_path, "dummy_#{feature_count}.feature")
@@ -30,7 +30,7 @@ Then("the mindmap contains a node with the subdir") do
 end
 
 Then("the subdir node contains a node with the feature") do
-  expect(@mindmap.xpath("/map/node/node[@TEXT='subdir']/node/@TEXT").first.to_s).to match("dummy feature for testing")
+  expect(@mindmap.xpath("/map/node/node[starts-with(@ID,'subdir_')]/node[starts-with(@ID,'feature_')]").count).to eq(1)
 end
 
 Then("the subdir node is marked by a folder icon") do

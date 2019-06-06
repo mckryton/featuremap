@@ -27,11 +27,11 @@ Given("it contains <nr_of_files> files of <file_type>") do |table|
   table.hashes.each do |table_row|
     if table_row["file_type"] == "feature"
       for file_nr in 1..table_row["nr_of_files"].to_i
-        create_feature(@path_to_testdata, "dummy feature #{file_nr}.feature")
+        create_feature("#{@path_to_testdata}/#{@feature_dir}", "dummy feature #{file_nr}.feature")
       end
     else
       for file_nr in 1..table_row["nr_of_files"].to_i
-        create_other_file(@path_to_testdata, "dummy no_feature #{file_nr}.#{table_row["file_type"]}")
+        create_other_file("#{@path_to_testdata}/#{@feature_dir}", "dummy no_feature #{file_nr}.#{table_row["file_type"]}")
       end
     end
   end

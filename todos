@@ -1,9 +1,8 @@
 refactor:
   * use the term "folder" instead of "subdir", e.g. for node types
-  * add a commandline feature
 
 features
-  * wrapper for commandline
+  * give feedback
     - recognize existing filenames for mindmaps
     - warn if name for feature folder != "features"
     - use top level feature folders name for naming the mindmap file
@@ -20,4 +19,3 @@ features
 
 usage
   * create featuremap gem
-  * write an readme

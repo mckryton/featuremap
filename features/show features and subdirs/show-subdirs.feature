@@ -1,3 +1,4 @@
+
 Ability: show subdirs
   Calling the mapper will result in a new freemind mindmap. The mindmap will
   show every subdir from the feature dir as a separate node and attach all
@@ -15,7 +16,7 @@ Ability: show subdirs
      Then a mindmap file without any validation error is created
       And the mindmap contains a node with the feature name
 
-
+  
   Scenario: feature dir with one level of subdirs
     Given a feature dir "subdirs_one_level"
       And it contains at least one subdir
@@ -42,7 +43,7 @@ Ability: show subdirs
 
 
   # rule: don't show subdirs used for code and configuration
-  @debug
+
   Scenario: ignore step_definitions and support folders
     Given a feature dir "subdirs_code_config"
       And the feature dir contains subdirs with a different amount of features
