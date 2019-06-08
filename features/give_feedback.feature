@@ -20,7 +20,7 @@ Ability: give feedback
       And featuremap shows the message "can't access >>secret_features<< as feature dir"
 
 
-  # rule show an error message if the featuremap can't write the mindmap
+  # rule: show an error message if the featuremap can't write the mindmap
 
   Scenario: mindmap name contains an non-existing path
     Given "invalid-path/featuremap.mm" as a non existing location for the mindmap
@@ -34,3 +34,15 @@ Ability: give feedback
      When the user runs featuremap
      Then featuremap exits with 74
       And featuremap shows the message "can't write to readonly-path/featuremap.mm"
+
+
+  # rule: add a number to the minmaps name if the file already exists
+  @debug
+  Scenario: mindmap file already exists
+    Given a mindmap file "featuremap.mm" already exists
+      And a feature dir "existing_name_features"
+      And it contains a feature
+      And "featuremap.mm" is used as an argument for the featuremap script
+     When the user runs featuremap
+     Then featuremap shows the message "given mindmap name is already in use, created featuremap-1.mm"
+      And a new mindmap with name "featuremap-1.mm" was created

@@ -30,6 +30,6 @@ else
   end
   featuremap = Featuremap.new(feature_dir,options[:verbose])
   featuremap.create_featuremap(output_file)
-  puts featuremap.err_msg
+  puts featuremap.err_msg.join("\n")
   exit featuremap.exit_status
 end

@@ -10,6 +10,7 @@ Before do
     @log.level = Logger::ERROR
   end
   @featuremap_file = ""
+  delete_path("test_data")
   @path_to_results = "test_data/out"
   @path_to_testdata = "test_data/in"
 end

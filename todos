@@ -1,9 +1,10 @@
 refactor:
   * use the term "folder" instead of "subdir", e.g. for node types
+  * replace @err_msg with @log
+  * name all feature dirs "features"
 
 features
   * give feedback
-    - recognize existing filenames for mindmaps
     - warn if name for feature folder != "features"
     - use top level feature folders name for naming the mindmap file
   * show features

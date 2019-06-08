@@ -20,10 +20,29 @@ Given("the user rights for the minmaps don't have access for writing") do
   FileUtils.chmod("a=r", "#{@path_to_results}/#{@path_to_mindmap}")
 end
 
+Given("a mindmap file {string} already exists") do |mindmap_file_name|
+  create_file(@path_to_results, mindmap_file_name, "")
+end
+
+Given("it contains a feature") do
+  create_feature("#{@path_to_testdata}/#{@feature_dir}", "dummy feature.feature")
+end
+
+Given("{string} is used as an argument for the featuremap script") do |mindmap_file_name|
+  @featuremap_file = "#{@path_to_results}/#{mindmap_file_name}"
+end
+
 Then("featuremap exits with {int}") do |exit_status|
   expect($CHILD_STATUS.exitstatus).to eq(exit_status)
 end
 
 Then("featuremap shows the message {string}") do |err_msg|
-  expect(@script_output.sub("#{@path_to_testdata}/", "")).to match(err_msg)
+  @script_output = @script_output.sub("#{@path_to_testdata}/", "")
+  @script_output = @script_output.sub("#{@path_to_results}/", "")
+  expect(@script_output).to match(err_msg)
+end
+
+Then("a new mindmap with name {string} was created") do |mindmap_file_name|
+  expect(File.exists?("#{@path_to_results}/#{mindmap_file_name}")).to be_truthy
+  expect(validate_mm("#{@path_to_results}/#{mindmap_file_name}").count).to eq(0)
 end

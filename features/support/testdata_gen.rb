@@ -23,6 +23,7 @@ DUMMY_SCENARIO
   create_file(path, name, feature)
 end
 
+
 def create_other_file(path, name)
 
   content = <<DUMMY_TEXT
@@ -33,11 +34,15 @@ DUMMY_TEXT
   create_file(path, name, content)
 end
 
+
 def create_file(path, name, content)
   create_path(path)
   # file anlegen
-  IO.write("#{path}/#{name}", content)
+  file = File.open("#{path}/#{name}", "w")
+  file.print(content)
+  file.close
 end
+
 
 def create_path(path)
   currentDir = Dir.getwd
@@ -50,5 +55,14 @@ def create_path(path)
       # wenn nicht anlegen
       Dir.mkdir(currentDir)
     end
+  end
+end
+
+
+def delete_path(path)
+  currentDir = Dir.getwd
+
+  if Dir.exists?("#{currentDir}/#{path}")
+    FileUtils.rm_rf(path)
   end
 end
