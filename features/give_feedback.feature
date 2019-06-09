@@ -37,8 +37,8 @@ Ability: give feedback
 
 
   # rule: add a number to the minmaps name if the file already exists
-  @debug
-  Scenario: mindmap file already exists
+
+  Scenario: a file with the same name as the mindmap already exists
     Given a mindmap file "featuremap.mm" already exists
       And a feature dir "existing_name_features"
       And it contains a feature
@@ -46,3 +46,12 @@ Ability: give feedback
      When the user runs featuremap
      Then featuremap shows the message "given mindmap name is already in use, created featuremap-1.mm"
       And a new mindmap with name "featuremap-1.mm" was created
+
+  Scenario: multiple files with the same name as the mindmap already exists
+    Given 6 multiple mindmap file with the name "featuremap" distinguished only by number exist
+      And a feature dir "existing_name_features"
+      And it contains a feature
+      And "featuremap.mm" is used as an argument for the featuremap script
+     When the user runs featuremap
+     Then featuremap shows the message "given mindmap name is already in use, created featuremap-6.mm"
+      And a new mindmap with name "featuremap-6.mm" was created

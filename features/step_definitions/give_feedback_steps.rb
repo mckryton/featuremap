@@ -32,6 +32,13 @@ Given("{string} is used as an argument for the featuremap script") do |mindmap_f
   @featuremap_file = "#{@path_to_results}/#{mindmap_file_name}"
 end
 
+Given("{int} multiple mindmap file with the name {string} distinguished only by number exist") do |duplicate_count, mindmap_file_name|
+  create_file(@path_to_results, "#{mindmap_file_name}.mm", "")
+  (1..duplicate_count-1).each do |file_nr|
+    create_file(@path_to_results, "#{mindmap_file_name}-#{file_nr}.mm", "")
+  end
+end
+
 Then("featuremap exits with {int}") do |exit_status|
   expect($CHILD_STATUS.exitstatus).to eq(exit_status)
 end
