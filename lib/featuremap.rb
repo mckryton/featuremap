@@ -8,10 +8,14 @@ class Featuremap
 
   attr_reader :nodes, :exit_status, :err_msg
 
-  def initialize(p_features_path, p_verbose = false)
+  def initialize(p_features_path, p_mindmap_path, p_verbose = false)
     @exit_status = 0
-    @err_msg = []
-    @log = Logger.new(STDOUT)
+    if p_mindmap_path == "STDOUT"
+      @log = Logger.new(STDERR)
+      @log.error("switch logdev to stderr")
+    else
+      @log = Logger.new(STDOUT)
+    end
     @log.datetime_format = "%H:%M:%S"
     if ENV['LOG_LEVEL'] == 'debug'
       @log.level = Logger::DEBUG
@@ -28,43 +32,47 @@ class Featuremap
       @features_path = p_features_path
     else
       @exit_status = 66  # see https://www.freebsd.org/cgi/man.cgi?query=sysexits&sektion=3 for more info
-      @err_msg.push("can't find >>#{p_features_path}<< as feature dir")
+      @log.error("can't find >>#{p_features_path}<< as feature dir")
+      return
     end
     @log.info("create a new featuremap")
     @mindmap = Mindmap.new(@log)
   end
 
   # class entry point - create a mindmap for a given path
-  def create_featuremap(p_featuremap_path)
-    if p_featuremap_path
-      featuremap_path = p_featuremap_path
-    else
-      featuremap_path = Dir.pwd + "/featuremap.mm"
-    end
-    while File.exists?(featuremap_path)
-      filename_parts = featuremap_path.split(".")
-      if filename_parts[0] =~ /-\d+$/
-        filename_parts = filename_parts[0].split("-")
-        featuremap_path = "#{filename_parts[0]}-#{filename_parts[1].to_i + 1}.mm"
-      else
-        featuremap_path = "#{filename_parts[0]}-1.mm"
+  def create_featuremap(p_mindmap_path)
+    mindmap_path = p_mindmap_path
+    if p_mindmap_path != "STDOUT"
+      while File.exists?(mindmap_path)
+        filename_parts = mindmap_path.split(".")
+        if filename_parts[0] =~ /-\d+$/
+          filename_parts = filename_parts[0].split("-")
+          mindmap_path = "#{filename_parts[0]}-#{filename_parts[1].to_i + 1}.mm"
+        else
+          mindmap_path = "#{filename_parts[0]}-1.mm"
+        end
+      end
+      if mindmap_path != p_mindmap_path
+        @log.error("given mindmap name is already in use, created #{mindmap_path}")
+      end
+      begin
+        IO.write("#{mindmap_path}","")
+      rescue Exception
+        @log.error("can't write to #{mindmap_path}")
+        @exit_status = 74
+        return
       end
     end
-    if featuremap_path != p_featuremap_path
-      @err_msg.push("given mindmap name is already in use, created #{featuremap_path}")
-    end
-    begin
-      IO.write("#{featuremap_path}","")
-    rescue Exception
-      @err_msg.push("can't write to #{featuremap_path}")
-      @log.warn @err_msg
-      @exit_status = 74
-      return
-    end
     read_features(@features_path)
-    mindmap_file = File.open(featuremap_path,"w")
-    mindmap_file.write(@mindmap.to_s)
-    mindmap_file.close
+    if @exit_status == 0
+      if mindmap_path != "STDOUT"
+        mindmap_file = File.open(mindmap_path,"w")
+        mindmap_file.write(@mindmap.to_s)
+        mindmap_file.close
+      else
+        puts @mindmap.to_s
+      end
+    end
   end
 
   # scan feature folder for feature files and subdirs
@@ -75,8 +83,7 @@ class Featuremap
       begin
         features = Dir.entries(p_features_path)
       rescue Exception
-        @err_msg.push("can't access >>#{p_features_path}<< as feature dir")
-        @log.warn @err_msg
+        @log.error("can't access >>#{p_features_path}<< as feature dir")
         @exit_status = 66
         return
       end

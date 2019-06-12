@@ -16,7 +16,7 @@ Given("{string} as a read-only location for the mindmap") do |path_to_mindmap|
   create_path("#{@path_to_results}/#{@path_to_mindmap}")
 end
 
-Given("the user rights for the minmaps don't have access for writing") do
+Given("the user rights for the mindmaps don't have access for writing") do
   FileUtils.chmod("a=r", "#{@path_to_results}/#{@path_to_mindmap}")
 end
 
@@ -39,17 +39,31 @@ Given("{int} multiple mindmap file with the name {string} distinguished only by 
   end
 end
 
+Given("the argument for the mindmap file name is missing") do
+  @featuremap_file = nil
+end
+
 Then("featuremap exits with {int}") do |exit_status|
-  expect($CHILD_STATUS.exitstatus).to eq(exit_status)
+  expect(@exit_status.exitstatus).to eq(exit_status)
 end
 
 Then("featuremap shows the message {string}") do |err_msg|
-  @script_output = @script_output.sub("#{@path_to_testdata}/", "")
-  @script_output = @script_output.sub("#{@path_to_results}/", "")
-  expect(@script_output).to match(err_msg)
+  script_output = @stdout + @stderr
+  script_output = script_output.sub("#{@path_to_testdata}/", "")
+  script_output = script_output.sub("#{@path_to_results}/", "")
+  expect(script_output).to include(err_msg)
 end
 
 Then("a new mindmap with name {string} was created") do |mindmap_file_name|
   expect(File.exists?("#{@path_to_results}/#{mindmap_file_name}")).to be_truthy
   expect(validate_mm("#{@path_to_results}/#{mindmap_file_name}").count).to eq(0)
+end
+
+Then("the content of the mindmap file is redirected to stdout") do
+  expect(validate_content(@stdout).count).to eq(0)
+end
+
+Then("featuremap shows the message {string} on stderr") do |warning_msg|
+  @stderr = @stderr.sub("#{@path_to_testdata}/", "")
+  expect(@stderr).to include(warning_msg)
 end

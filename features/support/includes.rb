@@ -3,3 +3,4 @@ require 'english'       # this is for speaking built-in variable names e.g. $CHI
 require 'featuremap'    # include the featuremap main class
 require 'nokogiri'      # include xml creation and validation lib
 require 'fileutils'     # for setting access rights to test_data files and dirs
+require 'open3'         # to read from stderr
