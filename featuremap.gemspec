@@ -16,5 +16,5 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "featuremap"
 
   s.files       = ["bin/featuremap", "lib/featuremap.rb","lib/mindmap.rb"]
-  s.executables = ["bin/featuremap"]
+  s.executables = ["featuremap"]
 end
