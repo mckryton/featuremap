@@ -17,7 +17,7 @@ Ability: give feedback
       And the user rights for the feature dir don't allow access
      When the user runs featuremap
      Then featuremap exits with 66
-      And featuremap shows the message "can't access >>secret_features<< as feature dir"
+      And featuremap shows the message "can't access >>secret_features/<< as feature dir"
 
 
   # rule: show an error message if the featuremap can't write the mindmap

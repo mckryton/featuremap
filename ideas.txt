@@ -1,6 +1,8 @@
 refactor:
   * use the term "folder" instead of "subdir", e.g. for node types
   * name all feature dirs "features"
+  * add featuremap classes to module featuremap
+  * use version.rb from module featuremap
 
 features
   * give feedback

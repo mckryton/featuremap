@@ -30,7 +30,7 @@ else
   end
   featuremap = Featuremap.new(feature_dir, output_file, options[:verbose])
   if featuremap.exit_status == 0
-    featuremap.create_featuremap(output_file)
+    featuremap.create_featuremap()
   end
   exit featuremap.exit_status
 end

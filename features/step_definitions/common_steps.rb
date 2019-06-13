@@ -24,7 +24,7 @@ When("the mapper is called") do
   create_path(@path_to_results)
   @featuremap_file = "#{@path_to_results}/featuremap.mm"
   @mapper = Featuremap.new("#{@path_to_testdata}/#{@feature_dir}", @featuremap_file)
-  @mapper.create_featuremap(@featuremap_file)
+  @mapper.create_featuremap()
 end
 
 When("the user runs featuremap") do
