@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require_relative '../lib/featuremap'
+
+options = {}
+option_parser = OptionParser.new do |opts|
+
+  executable_name = File.basename($PROGRAM_NAME)
+  opts.banner = "Create a mindmap from Gherkin feature files\n\n" + \
+  "Usage: #{executable_name} [options] features_dir [mindmap_file]\n"
+
+  opts.on("-v","--verbose") do
+    options[:verbose] = true
+  end
+
+end
+
+option_parser.parse!
+if ARGV.empty?
+  puts "you must supply the location of the feature files\n\n"
+  puts option_parser.help
+  exit 64 # see https://www.freebsd.org/cgi/man.cgi?query=sysexits&sektion=3 for more info
+else
+  feature_dir = ARGV[0]
+  if ARGV[1]
+    output_file = ARGV[1]
+  else
+    output_file = "STDOUT"
+  end
+  featuremap = Featuremap.new(feature_dir, output_file, options[:verbose])
+  if featuremap.exit_status == 0
+    featuremap.create_featuremap()
+  end
+  exit featuremap.exit_status
+end

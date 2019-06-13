@@ -1,20 +1,24 @@
-#$LOAD_PATH.push File.expand_path("lib/", __FILE__)
-#require "featuremap/version"
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require "version"
 
 Gem::Specification.new do |s|
   s.name        = "featuremap"
-#  s.version     = Featuremap::VERSION
-  s.version     = "0.0.1"
+  s.version     = Featuremap::VERSION
+#  s.version     = "0.0.1"
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Matthias Carell"]
   s.email       = ["rumpelcenter-featuremap at yahoo.com"]
   s.homepage    = "https://github.com/mckryton/featuremap"
   s.summary     = %q{A script to convert Gherkin features into a mindmap}
   s.description = %q{Featurmaps helps you to visualize the functionality of your \
-    application by presenting your features as a mindmap}
+    application by turning your Gherkin features into a mindmap}
+  s.license     = "MIT"
 
   s.rubyforge_project = "featuremap"
 
-  s.files       = ["bin/featuremap", "lib/featuremap.rb","lib/mindmap.rb"]
-  s.executables = ["featuremap"]
+  s.files         = `git ls-files`.split($/).grep(%r{^(bin|lib|features)/})
+  s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  s.test_files    = s.files.grep(%r{^(test|spec|features)/})
+  s.require_paths = ["lib"]
 end
