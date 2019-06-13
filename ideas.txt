@@ -1,6 +1,5 @@
 refactor:
   * use the term "folder" instead of "subdir", e.g. for node types
-  * replace @err_msg with @log
   * name all feature dirs "features"
 
 features
@@ -19,4 +18,4 @@ features
     - use tags instead of subdirs as first level nodes
 
 usage
-  * create featuremap gem
+  * use git hooks to automatically update the version number
