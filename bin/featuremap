@@ -28,7 +28,7 @@ else
   else
     output_file = "STDOUT"
   end
-  featuremap = Featuremap.new(feature_dir, output_file, options[:verbose])
+  featuremap = Featuremap::Featuremap.new(feature_dir, output_file, options[:verbose])
   if featuremap.exit_status == 0
     featuremap.create_featuremap()
   end
