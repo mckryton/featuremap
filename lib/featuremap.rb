@@ -1,6 +1,7 @@
 # use securerandom to create unique id's
 require 'securerandom'
 require 'logger'
+require 'cuke_modeler'
 require_relative 'mindmap'
 
 
@@ -70,7 +71,15 @@ class Featuremap
         return
       end
     end
-    read_features(@features_path)
+    begin
+      directory_model = CukeModeler::Directory.new(@features_path)
+      @log.info "start reading features from dir #{@features_path}"
+      read_features(directory_model)
+    rescue Exception
+      @log.error("can't access >>#{features_path}<< as feature dir")
+      @exit_status = 66
+      return
+    end
     if @exit_status == 0
       if mindmap_path != "STDOUT"
         mindmap_file = File.open(mindmap_path,"w")
@@ -82,55 +91,25 @@ class Featuremap
     end
   end
 
-  # scan feature folder for feature files and subdirs
-  def read_features(p_features_path = @features_path, p_parent_node = nil)
-    # don't read features if some error happened before
-    if @exit_status == 0
-      feature_node = nil
-      begin
-        if p_features_path.end_with?("/")
-          features_path = p_features_path
-        else
-          features_path = p_features_path + "/"
-        end
-        features = Dir.entries(features_path)
-      rescue Exception
-        @log.error("can't access >>#{features_path}<< as feature dir")
-        @exit_status = 66
-        return
-      end
-      @log.info "start reading features from dir #{features_path}"
-      feature_count = 0
-      scenario_count = 0
-      features.each do |feature_file|
-        #ignore files starting with .
-        if feature_file =~ /^[^\.]/
-          #look for features in only in .feature files
-          if feature_file =~ /\.feature$/
-            feature = File.read("#{features_path}#{feature_file}")
-            feature.scan(/^\s*(Feature|Ability|Business Need):\s*(\S.*)$/) do |feature_type, feature_name|
-              feature_node = @mindmap.add_node(feature_name, "feature", p_parent_node)
-              feature_count += 1
-            end
-            feature.scan(/^\s*(Scenario|Scenario Outline):\s*(\S.*)$/) do |scenario_type, scenario_name|
-              case scenario_type
-                when "Scenario Outline" then @mindmap.add_node(scenario_name, "scenario_outline", feature_node)
-                when "Scenario"  then @mindmap.add_node(scenario_name, "scenario", feature_node)
-              end
-              scenario_count += 1
-            end
-          end
-          # look for subdirs
-          if File.directory?("#{features_path}#{feature_file}")
-            # ignore step_definitions and support folders because those are used for code
-            if feature_file != "step_definitions" && feature_file != "support"
-              subdir_node = @mindmap.add_node(feature_file, "subdir", p_parent_node)
-              read_features("#{features_path}#{feature_file}", subdir_node)
-            end
-          end
+  #TODO work in progress: use cuke modeler
+  def read_features(p_cm_directory, p_parent_node = nil)
+    feature_node = nil
+    p_cm_directory.feature_files.each do |feature_file|
+      feature_node = @mindmap.add_node(feature_file.feature.name, "feature", p_parent_node)
+      feature_file.feature.tests.each do |scenario|
+        if scenario.keyword == "Scenario"
+          @mindmap.add_node(scenario.name, "scenario", feature_node)
+        elsif scenario.keyword == "Scenario Outline"
+          @mindmap.add_node(scenario.name, "scenario_outline", feature_node)
         end
       end
-      @log.info "found #{feature_count} feature(s) and #{scenario_count} scenarios in dir #{features_path}"
+    end
+    p_cm_directory.directories.each do |sub_dir|
+      if sub_dir.name != "step_definitions" and sub_dir.name != "support"
+        subdir_node = @mindmap.add_node(sub_dir.name, "subdir", p_parent_node)
+        @log.info("add features from #{sub_dir.path}")
+        read_features_cm(sub_dir, subdir_node)
+      end
     end
   end
 
