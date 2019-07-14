@@ -15,8 +15,6 @@ Gem::Specification.new do |s|
     application by turning your Gherkin features into a mindmap}
   s.license     = "MIT"
 
-  s.rubyforge_project = "featuremap"
-
   s.files         = `git ls-files`.split($/).grep(%r{^(bin|lib|features)/})
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
