@@ -5,7 +5,6 @@ require "version"
 Gem::Specification.new do |s|
   s.name        = "featuremap"
   s.version     = Featuremap::VERSION
-#  s.version     = "0.0.1"
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Matthias Carell"]
   s.email       = ["rumpelcenter-featuremap at yahoo.com"]
@@ -19,4 +18,5 @@ Gem::Specification.new do |s|
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
+  s.add_dependency("cuke_modeler")
 end
