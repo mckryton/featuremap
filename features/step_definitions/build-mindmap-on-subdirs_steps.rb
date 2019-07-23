@@ -56,6 +56,6 @@ Then("the node of every subdir contains the corresponding number of feature node
   end
 end
 
-Then("the minmap does not contain a folder node {string}") do |node_name|
+Then("the mindmap does not contain a folder node {string}") do |node_name|
   expect(@mindmap.xpath("//node[starts-with(@ID, 'subdir_') and @TEXT = '#{node_name}']").count).to eq(0)
 end

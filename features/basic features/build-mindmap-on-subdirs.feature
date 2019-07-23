@@ -1,8 +1,8 @@
-
-Ability: show subdirs
-  Calling the mapper will result in a new freemind mindmap. The mindmap will
-  show every subdir from the feature dir as a separate node and attach all
-  features from the subdir as children nodes.
+Ability: build mindmap on subdirs
+  Calling featuremap will result in a new freemind mindmap. The mindmap will
+  show every subdir from the feature dir as a separate node by default and attach
+  all features from the subdir as children nodes.
+  See the "use tags/build mindmap on tags" ability if tags should be used instead of subdirs.
 
   # rule: turn subdirs into mindmap nodes
   # - show subdirs as mindmap nodes
@@ -16,7 +16,7 @@ Ability: show subdirs
      Then a mindmap file without any validation error is created
       And the mindmap contains a node with the feature name
 
-  
+
   Scenario: feature dir with one level of subdirs
     Given a feature dir "subdirs_one_level"
       And it contains at least one subdir
@@ -54,5 +54,5 @@ Ability: show subdirs
           |support            |0             |
      When the mapper is called
      Then a mindmap file without any validation error is created
-      And the minmap does not contain a folder node "step_definitions"
-      And the minmap does not contain a folder node "support"
+      And the mindmap does not contain a folder node "step_definitions"
+      And the mindmap does not contain a folder node "support"
