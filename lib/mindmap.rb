@@ -19,7 +19,7 @@ module Featuremap
 
     # create a new node
     def create_node(p_node_text, p_node_type)
-      node = {"created" => Time.now.to_i, "id" => SecureRandom.uuid.gsub(/-/,''), "modified" => Time.now.to_i, "text" => p_node_text, "type" => p_node_type, "nodes" => []}
+      return {"created" => Time.now.to_i, "id" => SecureRandom.uuid.gsub(/-/,''), "modified" => Time.now.to_i, "text" => p_node_text, "type" => p_node_type, "nodes" => []}
     end
 
     # add a new node
@@ -47,6 +47,8 @@ module Featuremap
           nodes_text << "<icon BUILTIN=\"folder\"/>\n"
         when "scenario_outline"
           nodes_text << "<icon BUILTIN=\"list\"/>\n"
+        when "tag"
+          nodes_text << "<icon BUILTIN=\"attach\"/>\n"
         end
         # call function recursively for sublevel nodes
         if not node["nodes"].empty?

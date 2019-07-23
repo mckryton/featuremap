@@ -36,6 +36,18 @@ When("the user runs featuremap") do
   end
 end
 
+When("the user runs featuremap with the {string} option") do |option|
+  @log.debug "run script: bin/featuremap --#{option} #{@path_to_testdata}/#{@feature_dir} #{@featuremap_file}"
+  if @featuremap_file
+    @stdout, @stderr, @exit_status = Open3.capture3("bin/featuremap", "#{option}", "#{@path_to_testdata}/#{@feature_dir}", @featuremap_file)
+  else
+    @stdout, @stderr, @exit_status = Open3.capture3("bin/featuremap", "#{option}", "#{@path_to_testdata}/#{@feature_dir}")
+  end
+  @log.debug "stderr:\n#{@stderr}"
+  @log.debug "stdout:\n#{@stdout}"
+  @log.debug "script finished with exit code #{@exit_status.exitstatus}"
+end
+
 Then("a mindmap file without any validation error is created") do
   #validate generated mm file with freemind.xsd
   #validate_mm returns array containing validation errors

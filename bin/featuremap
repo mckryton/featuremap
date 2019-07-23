@@ -14,7 +14,12 @@ option_parser = OptionParser.new do |opts|
     options[:verbose] = true
   end
 
+  opts.on("-t","--use_tags") do
+    options[:use_tags] = true
+  end
+
 end
+
 
 option_parser.parse!
 if ARGV.empty?
@@ -28,7 +33,7 @@ else
   else
     output_file = "STDOUT"
   end
-  featuremap = Featuremap::Featuremap.new(feature_dir, output_file, options[:verbose])
+  featuremap = Featuremap::Featuremap.new(feature_dir, output_file, {"verbose" => options[:verbose], "use_tags" => options[:use_tags]})
   if featuremap.exit_status == 0
     featuremap.create_featuremap()
   end

@@ -1,10 +1,13 @@
 # generate feature files as test data
 # path: location of  tthe feature file
 # name: name of the feature
-def create_feature(path, name, scenarios = [])
+def create_feature(path, name, scenarios = [], options = {})
+
+  options = {"feature" => "dummy feature for testing", "tags" => ""}.merge(options)
 
   feature = <<DUMMY_FEATURE
-Feature: dummy feature for testing
+#{options["tags"]}
+Feature: #{options["feature"]}
   This is a dummy just for testing purposes
 DUMMY_FEATURE
 
