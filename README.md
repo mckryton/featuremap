@@ -6,11 +6,11 @@ This script converts Gherkin feature files into a [Freemind mindmap](http://free
 
 ## Installation
 
-gem install featuremap
+Run `gem install featuremap` to install **featuremap** and all required libraries.
 
 ### Prerequisites
 
-Featuremap is a Ruby script. It requires no additional libraries.
+Featuremap is a Ruby script. It uses the [cuke_modeler](https://github.com/enkessler/cuke_modeler) gem to analyze Gherkin feature files.
 
 ## Usage
 featuremap [options] features_dir [mindmap_file]
@@ -25,3 +25,4 @@ featuremap [options] features_dir [mindmap_file]
 |parameter|description|
 |---------|-----------|
 |-v, --verbose| show log messages (disabled by default if **featuremap** writes to stdout)|
+|-t, --use_tags| use tags instead of subdirs to attach feauture names to the mindmap|

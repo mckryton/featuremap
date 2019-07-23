@@ -18,13 +18,13 @@ module Featuremap
     end
 
     # create a new node
-    def create_node(p_node_text, p_node_type)
-      return {"created" => Time.now.to_i, "id" => SecureRandom.uuid.gsub(/-/,''), "modified" => Time.now.to_i, "text" => p_node_text, "type" => p_node_type, "nodes" => []}
+    def create_node(p_node_text, p_node_type, p_node_color = nil)
+      return {"color" => "#{p_node_color}", "created" => Time.now.to_i, "id" => SecureRandom.uuid.gsub(/-/,''), "modified" => Time.now.to_i, "text" => p_node_text, "type" => p_node_type, "nodes" => []}
     end
 
     # add a new node
-    def add_node(p_node_text, p_node_type, p_parent_node = nil)
-      new_node = create_node(p_node_text, p_node_type)
+    def add_node(p_node_text, p_node_type, p_parent_node = nil, p_node_color = nil)
+      new_node = create_node(p_node_text, p_node_type, p_node_color)
       # add new node on top level per default
       if p_parent_node.nil?
          p_parent_node = @nodes[0]
@@ -36,9 +36,14 @@ module Featuremap
     # turn hash of nodes into mindmap xml string
     def nodes_to_s(p_nodes, p_nodes_text="")
       nodes_text = p_nodes_text
-      #@log.debug nodes_text
       p_nodes.each do |node|
-        nodes_text << "<node CREATED=\"#{node["created"]}\" ID=\"#{node["type"]}_#{node["id"]}\" MODIFIED=\"#{node["modified"]}\" TEXT=\"#{node["text"]}\">\n"
+        #set optional node attributes
+        if node["color"] != nil
+          color = "COLOR=\"#{node["color"]}\" "
+        else
+          color = ""
+        end
+        nodes_text << "<node #{color}CREATED=\"#{node["created"]}\" ID=\"#{node["type"]}_#{node["id"]}\" MODIFIED=\"#{node["modified"]}\" TEXT=\"#{node["text"]}\">\n"
         # add icons and fonts to nodes
         case node["type"]
         when "feature"

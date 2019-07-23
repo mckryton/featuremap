@@ -10,6 +10,8 @@ module Featuremap
 
     attr_reader :nodes, :exit_status, :mindmap_path, :features_path, :options
 
+    NO_TAGS_NAME = "no tags"
+
     def initialize(p_features_path, p_mindmap_path, p_options = {})
       @options = {"verbose" => false, "use_tags" => false}.merge(p_options)
       if p_mindmap_path == "STDOUT"
@@ -77,10 +79,8 @@ module Featuremap
         directory_model = CukeModeler::Directory.new(@features_path)
         @log.info "start reading features from dir #{@features_path}"
         if @options["use_tags"]
-          puts ">>>> use tags"
           read_features_and_tags(directory_model)
         else
-          puts ">>>> use subdirs"
           read_features_and_subdirs(directory_model)
         end
       rescue Exception => e
@@ -123,22 +123,44 @@ module Featuremap
     end
 
     # build the mindmap by attaching feature nodes to tag nodes
-    def read_features_and_tags(p_cm_directory, p_parent_node = nil)
-      puts "start using tags"
+    def read_features_and_tags(p_cm_directory, p_parent_node = nil, p_tags = {})
       feature_node = nil
-      tags = {}
+      tags = p_tags
       p_cm_directory.feature_files.each do |feature_file|
-        feature_file.feature.all_tags.each do |tag|
-          # add tag nodes to root if new
-          if tags[tag.name] == nil
-            @log.info("add tag #{tag.name}")
-            tag_node = @mindmap.add_node(tag.name, "tag", p_parent_node)
-            # remember tag, so that each tag node is created only once
-            tags[tag.name] = tag_node
-          else
-            tag_node = tags[tag.name]
+        if feature_file.feature.all_tags.size > 0
+          feature_file.feature.all_tags.each do |tag|
+            # add tag nodes to root if new
+            if tags[tag.name] == nil
+              @log.info("add tag #{tag.name}")
+              tag_node = @mindmap.add_node(tag.name, "tag", p_parent_node)
+              # remember tag, so that each tag node is created only once
+              tags[tag.name] = tag_node
+            else
+              tag_node = tags[tag.name]
+            end
+            # add feature node to all tag nodes
+            feature_node = @mindmap.add_node(feature_file.feature.name, "feature", tag_node)
+            # add scenario nodes to features
+            feature_file.feature.tests.each do |scenario|
+              if scenario.keyword == "Scenario"
+                @mindmap.add_node(scenario.name, "scenario", feature_node)
+              elsif scenario.keyword == "Scenario Outline"
+                @mindmap.add_node(scenario.name, "scenario_outline", feature_node)
+              end
+            end
           end
-          # add feature node to all tag nodes
+        else
+          # create a tag node "no tags" unless already available
+          if tags[NO_TAGS_NAME] == nil
+            @log.info("add tag #{NO_TAGS_NAME}")
+            # format the no tags node with grey color using color code #999999
+            tag_node = @mindmap.add_node(NO_TAGS_NAME, "tag", p_parent_node, "#999999")
+            # remember tag, so that each tag node is created only once
+            tags[NO_TAGS_NAME] = tag_node
+          else
+            tag_node = tags[NO_TAGS_NAME]
+          end
+          # add feature node to root
           feature_node = @mindmap.add_node(feature_file.feature.name, "feature", tag_node)
           # add scenario nodes to features
           feature_file.feature.tests.each do |scenario|
@@ -153,9 +175,10 @@ module Featuremap
       p_cm_directory.directories.each do |sub_dir|
         if sub_dir.name != "step_definitions" and sub_dir.name != "support"
           @log.info("add features from #{sub_dir.path}")
-          read_features_and_tags(sub_dir)
+          tags = read_features_and_tags(sub_dir, nil, tags)
         end
       end
+      return tags
     end
 
   end

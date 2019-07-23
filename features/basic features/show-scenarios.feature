@@ -1,3 +1,4 @@
+@default
 Ability: show scenarios
   Calling the mapper will result in a new freemind mindmap. The mindmap will
   show all feature files as separate nodes. Every feature node will contain
@@ -20,7 +21,7 @@ Ability: show scenarios
 
 
   # rule: outline scenarios are marked by an list icon
-  
+
   Scenario: show outline scenario
     Given a feature dir with a feature containing an outline scenario
      When the mapper is called

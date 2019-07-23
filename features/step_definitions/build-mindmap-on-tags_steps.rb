@@ -4,11 +4,11 @@ Given("the name opf the mindmap file is set to {string}") do |featuremap_file|
 end
 
 Given("it contains a feature without tags") do
-  create_feature("#{@path_to_testdata}/#{@feature_dir}", "dummy.feature", [], {"tags" => "@example"})
+  create_feature("#{@path_to_testdata}/#{@feature_dir}", "dummy.feature", [], {"tags" => ""})
 end
 
 Given("it contains a feature {string} with the tag {string}") do |feature, tag|
-  create_feature("#{@path_to_testdata}/#{@feature_dir}", "dummy.feature", [], {"feature" => feature, "tags" => "#{tag}"})
+  create_feature("#{@path_to_testdata}/#{@feature_dir}", "#{feature}.feature", [], {"feature" => feature, "tags" => "#{tag}"})
 end
 
 Given("the feature dir contains features with mutliple tags") do |table|
@@ -17,6 +17,15 @@ Given("the feature dir contains features with mutliple tags") do |table|
   table.hashes.each do |table_row|
     create_feature(features_path, "#{table_row["feature"]}.feature", [], {"feature" => table_row["feature"], "tags" => table_row["tags"].gsub(/,/," ")})
   end
+end
+
+Given("it contains a subdir {string}") do |subdir|
+  @subdir_path = "#{@path_to_testdata}/#{@feature_dir}/#{subdir}"
+  create_path(@subdir_path)
+end
+
+Given("the subdir contains a feature {string} with the tag {string}") do |feature, tag|
+  create_feature(@subdir_path, "#{feature}.feature", [], {"feature" => feature, "tags" => tag})
 end
 
 Then("the feature nodes is attached to the root node") do
@@ -40,10 +49,25 @@ Then("the mindmap shows tag nodes with feature nodes") do |table|
     tag = table_row["tag_node"]
     features = table_row["features"].split(",")
     features.each do |feature|
-      @log.debug "/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'tag_') and  @TEXT = '#{tag}']"
       expect(@mindmap.xpath("/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'tag_') and  @TEXT = '#{tag}']").count).to eq(1)
-      @log.debug "/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'tag_') and  @TEXT = '#{tag}']/node[starts-with(@ID,'feature_') and @TEXT = '#{feature}']"
       expect(@mindmap.xpath("/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'tag_') and  @TEXT = '#{tag}']/node[starts-with(@ID,'feature_') and @TEXT = '#{feature}']").count).to eq(1)
     end
   end
+end
+
+Then("the tag child contains the feature nodes {string} and {string}") do |feature1, feature2|
+  expect(@mindmap.xpath("/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'tag_')]/node[starts-with(@ID,'feature_') and @TEXT = '#{feature1}']").count).to eq(1)
+  expect(@mindmap.xpath("/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'tag_')]/node[starts-with(@ID,'feature_') and @TEXT = '#{feature2}']").count).to eq(1)
+end
+
+Then("the mindmap contains a tag node {string}") do |tag|
+  expect(@mindmap.xpath("/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'tag_') and @TEXT = '#{tag}']").count).to eq(1)
+end
+
+Then("the font of the {string} tag node uses grey color") do |tag|
+  expect(@mindmap.xpath("/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'tag_') and @TEXT = '#{tag}' and @COLOR = '#999999']").count).to eq(1)
+end
+
+Then("the feature node is attached to the tag node") do
+  expect(@mindmap.xpath("/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'tag_')]/node[starts-with(@ID,'feature_')]").count).to eq(1)
 end

@@ -1,3 +1,4 @@
+@default
 Ability: show features
   Calling the mapper will result in a new freemind mindmap. The mindmap will
   show all feature files as separate nodes.
@@ -20,7 +21,7 @@ Ability: show features
 
 
   # rule: other files than .feature files are ignored
-  
+
   Scenario: ignore other file types
     Given a feature dir "mixed_files"
       And it contains <nr_of_files> files of <file_type>

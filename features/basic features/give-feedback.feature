@@ -1,4 +1,4 @@
-
+@default
 Ability: give feedback
   To run featuremap the user have to provide certain parameters (e.g. the location
     of the Gherkn feature files). If those parameters are missing or faulty,

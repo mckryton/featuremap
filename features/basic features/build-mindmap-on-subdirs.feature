@@ -1,3 +1,4 @@
+@default
 Ability: build mindmap on subdirs
   Calling featuremap will result in a new freemind mindmap. The mindmap will
   show every subdir from the feature dir as a separate node by default and attach
