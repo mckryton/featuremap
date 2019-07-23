@@ -28,10 +28,6 @@ Given("the subdir contains a feature {string} with the tag {string}") do |featur
   create_feature(@subdir_path, "#{feature}.feature", [], {"feature" => feature, "tags" => tag})
 end
 
-Then("the feature nodes is attached to the root node") do
-  expect(@mindmap.xpath("/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'feature_')]").count).to eq(1)
-end
-
 Then("the root node has a tag child node {string}") do |tag|
   expect(@mindmap.xpath("/map/node[starts-with(@ID,'root_')]/node[starts-with(@ID,'tag_') and @TEXT = '#{tag}']").count).to eq(1)
 end
