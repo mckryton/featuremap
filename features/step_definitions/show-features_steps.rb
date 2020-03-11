@@ -43,7 +43,7 @@ Then("the mindmap contains a root node named {string}") do |string|
 end
 
 Then("the mindmap contains {int} nodes") do |int|
-  for file_nr in 1..int
+  (1..int).each do
     expect(@mindmap.xpath("/map/node/node").count).to eq(int)
   end
 end
