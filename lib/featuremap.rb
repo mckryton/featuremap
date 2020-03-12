@@ -24,16 +24,11 @@ module Featuremap
         "[#{date_format}] #{severity.ljust(5,' ')}: #{msg}\n"
       end
       @log.datetime_format = "%H:%M:%S"
-      if ENV['LOG_LEVEL'] == 'debug'
-        @log.level = Logger::DEBUG
-      elsif ENV['LOG_LEVEL'] == 'info'
-        @log.level = Logger::INFO
-      elsif ENV['LOG_LEVEL'] == 'warn'
-        @log.level = Logger::WARN
-      else
-        # default log level
-        @log.level = Logger::ERROR
-      end
+      # default log level
+      @log.level = Logger::ERROR
+      @log.level = Logger::DEBUG if ENV['LOG_LEVEL'] == 'debug'
+      @log.level = Logger::INFO if ENV['LOG_LEVEL'] == 'info'
+      @log.level = Logger::WARN if ENV['LOG_LEVEL'] == 'warn'
       if @options["verbose"] && @log.level != Logger::DEBUG && p_mindmap_path != "STDOUT"
         @log.level = Logger::INFO
         @log.info "set log level to verbose"
@@ -55,25 +50,11 @@ module Featuremap
     def create_featuremap()
       mindmap_path = @mindmap_path
       if mindmap_path != "STDOUT"
-        while File.exists?(mindmap_path)
-          filename_parts = mindmap_path.split(".")
-          if filename_parts[0] =~ /-\d+$/
-            filename_parts = filename_parts[0].split("-")
-            mindmap_path = "#{filename_parts[0]}-#{filename_parts[1].to_i + 1}.mm"
-          else
-            mindmap_path = "#{filename_parts[0]}-1.mm"
-          end
-        end
+        mindmap_path = get_next_mindmap_name(mindmap_path)
         if mindmap_path != @mindmap_path
           @log.warn("given mindmap name is already in use, created #{mindmap_path}")
         end
-        begin
-          IO.write("#{mindmap_path}","")
-        rescue Exception
-          @log.error("can't write to #{mindmap_path}")
-          @exit_status = 74
-          return
-        end
+        create_mindmap_file(mindmap_path)
       end
       begin
         directory_model = CukeModeler::Directory.new(@features_path)
@@ -90,13 +71,45 @@ module Featuremap
         return
       end
       if @exit_status == 0
-        if mindmap_path != "STDOUT"
-          mindmap_file = File.open(mindmap_path,"w")
-          mindmap_file.write(@mindmap.to_s)
-          mindmap_file.close
+        write_mindmap(mindmap_path, @mindmap)
+      end
+    end
+
+    # increase the number of the given mindmap name by one
+    #  featuremap-1.mm > featuremap-2.mm
+    def get_next_mindmap_name(pMindmapPath)
+      mindmap_path = pMindmapPath
+      while File.exists?(mindmap_path)
+        filename_parts = mindmap_path.split(".")
+        if filename_parts[0] =~ /-\d+$/
+          filename_parts = filename_parts[0].split("-")
+          mindmap_path = "#{filename_parts[0]}-#{filename_parts[1].to_i + 1}.mm"
         else
-          puts @mindmap.to_s
+          mindmap_path = "#{filename_parts[0]}-1.mm"
         end
+      end
+      return mindmap_path
+    end
+
+    # create an empty file as target for the featuremap mindmap
+    def create_mindmap_file(pMindmapPath)
+      begin
+        IO.write("#{pMindmapPath}","")
+      rescue Exception
+        @log.error("can't write to #{pMindmapPath}")
+        @exit_status = 74
+        return
+      end
+    end
+
+    # write the content of the featuremap mindmap
+    def write_mindmap(pMindmapPath, pMindmap)
+      if pMindmapPath != "STDOUT"
+        mindmap_file = File.open(pMindmapPath,"w")
+        mindmap_file.write(pMindmap.to_s)
+        mindmap_file.close
+      else
+        puts pMindmap.to_s
       end
     end
 
