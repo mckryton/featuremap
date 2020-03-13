@@ -38,11 +38,7 @@ module Featuremap
       nodes_text = p_nodes_text
       p_nodes.each do |node|
         #set optional node attributes
-        if node["color"] != nil
-          color = "COLOR=\"#{node["color"]}\" "
-        else
-          color = ""
-        end
+        color = node["color"] == nil ? "" : "COLOR=\"#{node["color"]}\" "
         nodes_text << "<node #{color}CREATED=\"#{node["created"]}\" ID=\"#{node["type"]}_#{node["id"]}\" MODIFIED=\"#{node["modified"]}\" TEXT=\"#{node["text"]}\">\n"
         # add icons and fonts to nodes
         case node["type"]
